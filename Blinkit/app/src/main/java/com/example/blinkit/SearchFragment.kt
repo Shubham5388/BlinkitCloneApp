@@ -17,6 +17,7 @@ import com.example.blinkit.databinding.ItemViewProductBinding
 import com.example.blinkit.models.Product
 import com.example.blinkit.roomdb.CartProducts
 import com.example.blinkit.viewmodels.UserViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 
@@ -176,7 +177,7 @@ private lateinit var adapterProduct : AdapterProduct
             adminUid = product.adminUid
         )
 
-        lifecycleScope.launch {
+        lifecycleScope.launch(Dispatchers.IO) { // Specify IO dispatcher for database operations
             viewModel.insertCartProduct(cartProduct)
         }
     }

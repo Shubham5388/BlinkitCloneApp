@@ -14,9 +14,11 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
+import kotlinx.coroutines.withContext
 
 class UserViewModel(application: Application) : AndroidViewModel(application) {
 
@@ -27,21 +29,25 @@ class UserViewModel(application: Application) : AndroidViewModel(application) {
     getDatabaseInstance(application).cartProductsDao()
 
     //ROOM
-
     suspend fun insertCartProduct(products: CartProducts) {
-        cartProductDao.insertCartProduct(products)
+        withContext(Dispatchers.IO) {
+            cartProductDao.insertCartProduct(products)
+        }
     }
 
-    fun getAll(): LiveData<List<CartProducts>>{
+      fun getAll(): LiveData<List<CartProducts>>{
         return cartProductDao.getAllCartProducts()
     }
 
     suspend fun updateCartProduct(products: CartProducts) {
-        cartProductDao.updateCartProduct(products)
+        withContext(Dispatchers.IO) {
+            cartProductDao.updateCartProduct(products)
+        }
     }
-
     suspend fun deleteCartProduct(productId: String) {
-        cartProductDao.deleteCartProduct(productId)
+        withContext(Dispatchers.IO) {
+            cartProductDao.deleteCartProduct(productId)
+        }
     }
 
 
